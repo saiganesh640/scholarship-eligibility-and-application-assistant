@@ -68,12 +68,12 @@ KB = [
 FORM_GUIDE = [
  {"title": "1. Generate your OTR", "steps": ["Open NSP and choose Get your OTR.", "Verify your mobile, then your Aadhaar OTP.", "Complete face authentication in the NSP OTR app."], "tip": "Do this once. It works for your whole academic career.", "link": L_OTR},
  {"title": "2. Student login", "steps": ["Log in with your OTR.", "New students: choose domicile state, then Fresh.", "Returning students: choose Renewal."], "tip": "Pick the state you permanently live in.", "link": L_NSP},
- {"title": "3. Personal tab", "steps": ["Name and date of birth exactly as on Aadhaar.", "Gender, category, parents' names.", "Family income and disability status."], "tip": "You get a TEMPID after saving the Personal tab."},
- {"title": "4. Academic tab", "steps": ["Course, year of study and institute (search by AISHE code).", "Previous exam marks or percentage.", "Admission details."], "tip": "Copy marks from your marksheet, not from memory."},
+ {"title": "3. Personal tab", "steps": ["Name and date of birth exactly as on Aadhaar.", "Gender, category, parents' names.", "Family income and disability status."], "tip": "You get a TEMPID after saving. Write it down."},
+ {"title": "4. Academic tab", "steps": ["Course, year and institute (search by AISHE code).", "Previous exam marks or percentage.", "Admission details."], "tip": "Copy marks from your marksheet, not from memory."},
  {"title": "5. Scheme tab", "steps": ["Choose the scheme that matches your category, level and income.", "Check the Matches panel first."], "tip": "Only select schemes you qualify for."},
- {"title": "6. Bank tab", "steps": ["Account in your own name.", "Correct account number and IFSC.", "Account linked to Aadhaar."], "tip": "Your name must match your Aadhaar name."},
+ {"title": "6. Bank tab", "steps": ["Account in your own name.", "Correct account number and IFSC.", "Account linked to Aadhaar."], "tip": "Your name must match your Aadhaar."},
  {"title": "7. Contact tab", "steps": ["Permanent address, district, pin code.", "Mobile and email you use."], "tip": "Updates and verification messages go here."},
- {"title": "8. Submit and follow up", "steps": ["Upload documents and submit.", "Save your PRID.", "Take documents to your college for verification.", "Track status with the PRID."], "tip": "Scheme deadlines differ. Confirm the current deadline on the official NSP portal.", "link": L_NSP},
+ {"title": "8. Submit and follow up", "steps": ["Upload documents and submit.", "Save your PRID.", "Take documents to your college for verification.", "Track status with the PRID."], "tip": "Apply by September. The last date for most schemes is reported as 31 October 2026.", "link": L_NSP},
 ]
 
 class KnowledgeBase:
