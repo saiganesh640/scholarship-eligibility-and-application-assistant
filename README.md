@@ -10,7 +10,7 @@ A web-based academic project that helps students explore scholarship opportuniti
 - Student profile input for academic and personal eligibility details.
 - Scholarship listing from a local JSON dataset.
 - Rule-based eligibility checks against scholarship criteria.
-- Scholarship recommendations ranked using eligibility and relevance logic.
+- Scholarship recommendations ranked using eligibility and deadline logic.
 - Chat-based scholarship assistance using TF-IDF and cosine similarity.
 - Application form and document guidance.
 - CSV utility for importing scholarship listings.
@@ -99,7 +99,7 @@ README.md
 
 ## Scholarship Dataset
 
-The repository includes scholarship scheme records in `data/schemes.json`. They are demonstration data. Verify current eligibility rules, award values, deadlines and official URLs with the relevant official scholarship authorities before using them.
+The repository includes **19 scholarship scheme records** in `data/schemes.json`. They are demonstration data. Verify current eligibility rules, award values, deadlines and official URLs with the relevant official scholarship authorities before using them.
 
 To import additional records, prepare a CSV with the columns expected by `tools/import_listings.py`, then run:
 
