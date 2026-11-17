@@ -1,4 +1,5 @@
 fastapi
-uvicorn[standard]
+uvicorn
 scikit-learn
-python-jose[cryptography]
+pyjwt
+python-dotenv
