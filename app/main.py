@@ -15,7 +15,7 @@ from app.kb import KnowledgeBase, FORM_GUIDE, L_NSP
 ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / ".env")
 SECRET = os.getenv("JWT_SECRET", "dev-secret-change-me-dev-secret-change-me")
-app, bearer = FastAPI(title="Scholarship Eligibility and Application Assistant"), HTTPBearer()
+app, bearer = FastAPI(title="Scholar AI"), HTTPBearer()
 
 # ---------- auth ----------
 def db():
