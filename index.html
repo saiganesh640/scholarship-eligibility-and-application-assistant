@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scholar AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f1b3d;--ink2:#1c2d63;--sun:#ffb400;--teal:#0fa596;--tealbg:#d6f3ef;--coral:#e8503a;--coralbg:#fde3de;--warnbg:#fff0c7;--warn:#8a5a00;--bg:#f2f5fb;--card:#fff;--line:#d6dded;--muted:#5d6b88}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}body{font-family:"Bricolage Grotesque",system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
+button,input,select{font:inherit;color:inherit}:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.page{display:none;min-height:100vh;animation:in .5s cubic-bezier(.2,.8,.2,1)}.page.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes float{50%{transform:translateY(-14px)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes flip{50%{transform:scaleX(.15)}}@keyframes pop{from{transform:scale(.6);opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.9}}@keyframes dots{50%{opacity:.25}}
+.btn{background:var(--sun);color:var(--ink);border:0;padding:14px 26px;font-weight:800;font-size:1rem;border-radius:99px;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 0 #b57f00}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #b57f00}.btn.ghost{background:transparent;box-shadow:none;border:2px solid currentColor;padding:10px 20px}
+.link{background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
+/* login */
+#pLogin.on{display:grid;grid-template-columns:1.15fr 1fr}
+.hero{background:var(--ink);color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.hero svg{width:min(400px,80%);margin:0 auto 12px}.hero h1{font-size:clamp(2rem,4.4vw,3.6rem);line-height:1.02;margin:0 0 14px;font-weight:800;letter-spacing:-.02em;max-width:14ch}
+.hero p{max-width:40ch;color:#b9c5e6;margin:0 0 20px;line-height:1.5}.tags{display:flex;gap:10px;flex-wrap:wrap}.tags span{border:1.5px solid #3b4d86;border-radius:99px;padding:6px 14px;font-size:.85rem;font-weight:600}
+.spin{transform-origin:200px 190px;animation:spin 40s linear infinite}.fl{animation:float 5s ease-in-out infinite}.coin{transform-box:fill-box;transform-origin:center;animation:flip 3.2s ease-in-out infinite}
+.side{display:flex;align-items:center;justify-content:center;padding:32px}.box{width:min(400px,100%)}
+.box h2{font-size:2rem;margin:0 0 6px;font-weight:800}.box p{color:var(--muted);margin:0 0 16px}
+label.f{display:block;font-size:.85rem;font-weight:600;margin:14px 0 6px}
+input.t,select.t{width:100%;padding:13px 14px;border:2px solid var(--line);background:#fff;border-radius:12px;transition:border-color .2s}input.t:focus,select.t:focus{border-color:var(--ink);outline:0}
+#err{color:var(--coral);min-height:1.3em;margin-top:10px;font-size:.9rem}
+/* top bar */
+.bar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;position:sticky;top:0;z-index:5;background:rgba(242,245,251,.92);backdrop-filter:blur(8px)}
+.brand{font-weight:800;font-size:1.25rem;display:flex;align-items:center;gap:8px}.brand i{width:22px;height:22px;border-radius:50%;background:var(--sun);display:inline-block;box-shadow:inset -6px -4px 0 #e39d00}
+/* wizard */
+.wrap{max-width:720px;margin:0 auto;padding:8px 24px 48px}
+.prog{display:flex;gap:8px;margin:8px 0 26px}.prog b{flex:1;height:8px;border-radius:9px;background:var(--line);overflow:hidden;position:relative}.prog b::after{content:"";position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.8,.2,1)}.prog b.on::after{transform:none}
+.live{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:99px;padding:7px 16px;font-weight:600;font-size:.9rem}.live b{color:var(--sun);font-size:1.15rem}
+.step{display:none}.step.on{display:block;animation:in .45s cubic-bezier(.2,.8,.2,1)}
+.step h2{font-size:clamp(1.8rem,5vw,2.8rem);margin:14px 0 4px;font-weight:800;letter-spacing:-.02em}.step .sub{color:var(--muted);margin:0 0 20px}
+.q{font-weight:600;margin:22px 0 10px}.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 18px;font-weight:600;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+.chip:hover{transform:translateY(-3px);border-color:var(--ink)}.chip.on{background:var(--ink);color:#fff;border-color:var(--ink);animation:pop .25s}
+.big{font-size:3rem;font-weight:800;line-height:1;margin:6px 0 10px;letter-spacing:-.03em}.big small{font-size:1rem;color:var(--muted);font-weight:600}
+input[type=range]{width:100%;accent-color:var(--ink);height:32px}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:34px}
+/* scan */
+.scan{position:fixed;inset:0;background:var(--ink);color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:20;text-align:center;padding:24px}.scan.on{display:flex}
+.scan svg{width:120px;animation:spin 1.2s linear infinite}.scan #sn{font-weight:600;min-height:1.5em;max-width:34ch;color:#b9c5e6}.scan h3{margin:0;font-size:1.6rem}
+/* results */
+.band{display:flex;align-items:center;gap:32px;flex-wrap:wrap;max-width:1200px;margin:0 auto;padding:12px 24px 24px}
+.ring{position:relative;width:170px;height:170px;flex:none}.ring svg{transform:rotate(-90deg)}.ring circle{fill:none;stroke-width:14}
+.ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:3.4rem;font-weight:800;line-height:1}.ring .num small{font-size:.8rem;font-weight:600;color:var(--muted)}
+#arc{stroke:var(--teal);stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:339.3;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)}
+.band h1{font-size:clamp(1.6rem,3.6vw,2.6rem);margin:0 0 6px;font-weight:800;letter-spacing:-.02em}.band p{margin:0 0 12px;color:var(--muted)}
+.grid{max-width:1200px;margin:0 auto;padding:0 24px 40px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:start}
+.stats{display:flex;gap:8px;margin-bottom:14px}.stat{flex:1;padding:10px;border-radius:14px;text-align:center;font-size:.8rem;cursor:pointer;border:2px solid transparent;background:#fff;font-weight:600;transition:transform .15s}.stat:hover{transform:translateY(-2px)}
+.stat b{display:block;font-size:1.6rem}.stat.on{border-color:var(--ink)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;margin-bottom:12px;animation:rise .5s both}.card.hl{border-color:var(--sun);box-shadow:0 0 0 4px #ffb40040}
+.card summary{padding:14px 16px;cursor:pointer;list-style:none}.card summary::-webkit-details-marker{display:none}
+.card .t{font-weight:600;line-height:1.3}.card .m{color:var(--muted);font-size:.82rem;margin-top:2px}
+.tags2{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.tag{font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--bg)}.yes{background:var(--tealbg);color:#08675d}.maybe{background:var(--warnbg);color:var(--warn)}.no{background:var(--coralbg);color:#9b2b1b}
+.body{padding:0 16px 16px;font-size:.88rem;line-height:1.55}.body ul{margin:6px 0 0;padding-left:18px}
+.lk{display:inline-block;margin:10px 8px 0 0;padding:8px 14px;border-radius:99px;background:var(--sun);color:var(--ink);font-weight:700;font-size:.85rem;text-decoration:none}.lk.alt{background:#fff;border:2px solid var(--ink)}
+.right{position:sticky;top:70px;height:calc(100vh - 90px);background:#fff;border:2px solid var(--line);border-radius:20px;display:flex;flex-direction:column;overflow:hidden}
+.seg{display:flex;padding:8px;gap:6px;border-bottom:2px solid var(--line)}.seg button{flex:1;padding:9px;border:0;background:none;border-radius:10px;font-weight:700;cursor:pointer}.seg button.on{background:var(--ink);color:#fff}
+#chatPane,#guidePane{flex:1;display:flex;flex-direction:column;min-height:0}#guidePane{overflow:auto;padding:16px}
+#log{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:88%;padding:11px 15px;line-height:1.5;white-space:pre-wrap;border-radius:18px;animation:rise .35s;font-size:.93rem}.user{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:4px}.bot{background:var(--bg);border-bottom-left-radius:4px}
+.typing i{display:inline-block;width:7px;height:7px;margin-right:4px;border-radius:50%;background:var(--muted);animation:dots 1s infinite}.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+.sugg{display:flex;gap:8px;padding:0 16px 10px;overflow-x:auto}.sugg button{flex:none;background:#fff;border:2px solid var(--line);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:.82rem;font-weight:600}.sugg button:hover{border-color:var(--ink)}
+#f{display:flex;gap:8px;padding:12px;border-top:2px solid var(--line)}#f input{flex:1}#f .btn{padding:10px 20px;box-shadow:none}
+.nb{display:none}.conf{position:fixed;top:-20px;width:10px;height:14px;z-index:30;animation:fall 2.4s ease-in forwards;pointer-events:none}
+@media(max-width:900px){#pLogin.on{grid-template-columns:1fr}.hero{padding:28px 24px}.hero svg{width:200px}.hero h1{font-size:2rem}
+ .grid{display:block;padding-bottom:90px}.right{position:static;height:calc(100vh - 210px);margin-top:0}
+ #left{display:none}#pResults[data-t=m] #left{display:block}#pResults[data-t=m] .right{display:none}.seg{display:none}
+ .nb{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--line);z-index:6}.nb button{flex:1;padding:14px;border:0;background:none;font-weight:700;cursor:pointer;border-top:4px solid transparent}.nb button.on{border-color:var(--sun)}}
+#pResults[data-t=g] #chatPane{display:none}#pResults:not([data-t=g]) #guidePane{display:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+
+<section class="page on" id="pLogin">
+ <div class="hero">
+  <svg viewBox="0 0 400 400" role="img" aria-label="Graduation cap over a rising sun with floating rupee coins">
+   <defs><pattern id="dp" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#fff" opacity=".18"/></pattern></defs>
+   <rect width="400" height="400" fill="url(#dp)"/>
+   <circle cx="200" cy="190" r="100" fill="#ffb400"/><circle class="spin" cx="200" cy="190" r="130" fill="none" stroke="#ffb400" stroke-width="3" stroke-dasharray="3 12" stroke-linecap="round"/>
+   <g class="fl"><polygon points="200,105 310,155 200,205 90,155" fill="#0f1b3d"/><path d="M140 180v46q60 34 120 0v-46l-60 28z" fill="#1c2d63"/><path d="M300 158v58" stroke="#0f1b3d" stroke-width="4"/><circle cx="300" cy="222" r="8" fill="#e8503a"/></g>
+   <g fill="#fff"><g class="coin"><circle cx="70" cy="90" r="24" fill="#0fa596"/><text x="70" y="99" text-anchor="middle" font-size="24" font-weight="800">₹</text></g>
+   <g class="coin" style="animation-delay:-1s"><circle cx="335" cy="290" r="28" fill="#e8503a"/><text x="335" y="300" text-anchor="middle" font-size="28" font-weight="800">₹</text></g>
+   <g class="coin" style="animation-delay:-2s"><circle cx="90" cy="320" r="18" fill="#6c5ce7"/><text x="90" y="327" text-anchor="middle" font-size="18" font-weight="800">₹</text></g></g>
+  </svg>
+  <h1>Your scholarship, found in a minute.</h1>
+  <p>Tell us about you. We check 20 central NSP schemes, show what you qualify for, and walk you through the form.</p>
+  <div class="tags"><span>20 schemes</span><span>Free to use</span><span>Step-by-step form help</span></div>
+ </div>
+ <div class="side"><div class="box"><h2 id="lt">Welcome back</h2><p id="ls">Sign in to continue.</p>
+  <label class="f" for="em">Email</label><input class="t" id="em" type="email" autocomplete="email">
+  <label class="f" for="pw">Password</label><input class="t" id="pw" type="password" autocomplete="current-password">
+  <button class="btn" id="go" style="width:100%;margin-top:22px">Sign in</button>
+  <p style="margin:14px 0 0"><button class="link" id="swap">New here? Create an account</button></p><div id="err" role="alert"></div></div></div>
+</section>
+
+<section class="page" id="pProfile">
+ <div class="bar"><div class="brand"><i></i>Scholar AI</div><span class="live"><b id="liveN">20</b> schemes still possible</span></div>
+ <div class="wrap"><div class="prog"><b class="on"></b><b></b><b></b></div>
+  <div class="step on" data-s="0"><h2>First, who are you?</h2><p class="sub">Some schemes are only for certain groups. This decides which ones we show.</p>
+   <div class="q">Gender</div><div class="chips" id="cGender"></div><div class="q">Category</div><div class="chips" id="cCategory"></div>
+   <div class="q">Home state</div><select class="t" id="state"></select></div>
+  <div class="step" data-s="1"><h2>What are you studying?</h2><p class="sub">Every scheme covers a different level and marks range.</p>
+   <div class="q">Course level</div><div class="chips" id="cLevel"></div>
+   <div class="q">Marks in your last exam</div><div class="big"><span id="pv">75</span><small> %</small></div><input type="range" id="percent" min="30" max="100" step="1" value="75" aria-label="Marks percentage"></div>
+  <div class="step" data-s="2"><h2>And your family?</h2><p class="sub">Most schemes have a yearly family income limit.</p>
+   <div class="q">Family income per year</div><div class="big"><span id="iv">2.5 lakh</span></div><input type="range" id="income" min="0" max="12" step="0.25" value="2.5" aria-label="Family income in lakh rupees"></div>
+  <div class="nav"><button class="btn ghost" id="back" style="visibility:hidden">Back</button><button class="btn" id="next">Next</button></div></div>
+</section>
+
+<section class="page" id="pResults" data-t="c">
+ <div class="bar"><div class="brand"><i></i>Scholar AI</div><div><button class="btn ghost" id="edit" style="padding:8px 16px">Edit profile</button> <button class="link" id="out" style="margin-left:10px">Sign out</button></div></div>
+ <div class="band"><div class="ring"><svg viewBox="0 0 120 120" width="170" height="170"><circle cx="60" cy="60" r="54" stroke="#d6dded"/><circle id="arc" cx="60" cy="60" r="54"/></svg><div class="num"><span id="big">0</span><small id="of">of 20</small></div></div>
+  <div><h1 id="head">Checking your matches…</h1><p id="subh"></p></div></div>
+ <div class="grid"><div id="left"><div class="stats" id="stats"></div><div id="cards"></div></div>
+  <div class="right"><div class="seg"><button id="sc" class="on">Ask the assistant</button><button id="sg">Form guide</button></div>
+   <div id="chatPane"><div id="log"></div><div class="sugg" id="sugg"></div><form id="f"><input class="t" id="q" placeholder="Ask about OTR, documents, deadlines…" aria-label="Message" autocomplete="off"><button class="btn">Send</button></form></div>
+   <div id="guidePane"></div></div></div>
+ <nav class="nb"><button data-t="m" class="on">Matches</button><button data-t="c">Assistant</button><button data-t="g">Form guide</button></nav>
+</section>
+
+<div class="scan" id="scan"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#3b4d86" stroke-width="8"/><path d="M50 10a40 40 0 0 1 40 40" fill="none" stroke="#ffb400" stroke-width="8" stroke-linecap="round"/></svg><h3>Checking every scheme</h3><div id="sn"></div></div>
+
+<script>
+const $=id=>document.getElementById(id),h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const STATES=["andhra pradesh","arunachal pradesh","assam","bihar","chhattisgarh","delhi","goa","gujarat","haryana","himachal pradesh","jammu and kashmir","jharkhand","karnataka","kerala","ladakh","madhya pradesh","maharashtra","manipur","meghalaya","mizoram","nagaland","odisha","punjab","rajasthan","sikkim","tamil nadu","telangana","tripura","uttar pradesh","uttarakhand","west bengal"];
+const cap=s=>s.replace(/\b\w/g,c=>c.toUpperCase());
+let token=localStorage.tk,P=JSON.parse(localStorage.P||"{}"),data=[],filter="yes",hl=null,mode="login",step=0,timer,guideDone=false,first=true;
+const save=()=>localStorage.P=JSON.stringify(P);
+function go(id){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("on",p.id==id));scrollTo(0,0)}
+async function api(path,body,method="POST"){const r=await fetch("/api/"+path,{method,headers:{"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{})},body:method=="POST"?JSON.stringify(body):undefined});
+ const d=await r.json().catch(()=>({}));if(r.status==401&&token){token=null;localStorage.removeItem("tk");go("pLogin")}if(!r.ok)throw new Error(d.detail||"Something went wrong.");return d}
+/* login */
+$("swap").onclick=()=>{mode=mode=="login"?"register":"login";const l=mode=="login";$("lt").textContent=l?"Welcome back":"Create your account";$("ls").textContent=l?"Sign in to continue.":"It takes ten seconds and it's free.";$("go").textContent=l?"Sign in":"Create account";$("swap").textContent=l?"New here? Create an account":"I already have an account";$("err").textContent=""};
+$("go").onclick=async()=>{try{const d=await api(mode,{email:$("em").value,password:$("pw").value});token=d.token;localStorage.tk=token;$("err").textContent="";start()}catch(e){$("err").textContent=e.message}};
+["em","pw"].forEach(i=>$(i).addEventListener("keydown",e=>{if(e.key=="Enter")$("go").click()}));
+$("out").onclick=()=>{token=null;localStorage.removeItem("tk");go("pLogin")};
+/* wizard */
+function chips(id,key,opts){const c=$(id);c.replaceChildren();opts.forEach(([v,l])=>{const b=h("button","chip"+(P[key]==v?" on":""),l);b.type="button";b.onclick=()=>{P[key]=P[key]==v?null:v;save();chips(id,key,opts);live()};c.append(b)})}
+function buildWizard(){chips("cGender","gender",[["female","Female"],["male","Male"]]);
+ chips("cCategory","category",[["general","General / EWS"],["obc","OBC"],["sc","SC"],["st","ST"],["minority","Minority"],["pwd","Person with disability"]]);
+ chips("cLevel","level",[["school","School (class 9-12)"],["diploma","Diploma"],["undergraduate","Undergraduate"],["postgraduate","Postgraduate"],["phd","PhD"]]);
+ const s=$("state");s.replaceChildren(new Option("Select your state",""),...STATES.map(x=>new Option(cap(x),x)));s.value=P.state||"";
+ $("percent").value=P.percent??75;$("pv").textContent=$("percent").value;$("income").value=P.income!=null?P.income/1e5:2.5;incLabel();showStep(0)}
+const incLabel=()=>{const v=+$("income").value;$("iv").textContent=v>=12?"12 lakh or more":v==0?"Below ₹25,000":v+" lakh"};
+$("state").onchange=e=>{P.state=e.target.value||null;save();live()};
+$("percent").oninput=e=>{P.percent=+e.target.value;$("pv").textContent=e.target.value;save();live()};
+$("income").oninput=e=>{P.income=+e.target.value*1e5;incLabel();save();live()};
+function live(){clearTimeout(timer);timer=setTimeout(async()=>{try{const d=await api("recommend",P);$("liveN").textContent=d.counts.yes+d.counts.maybe}catch(e){}},250)}
+function showStep(n){step=n;document.querySelectorAll(".step").forEach(s=>s.classList.toggle("on",+s.dataset.s==n));document.querySelectorAll(".prog b").forEach((b,i)=>b.classList.toggle("on",i<=n));
+ $("back").style.visibility=n?"visible":"hidden";$("next").textContent=n==2?"Find my scholarships":"Next";scrollTo(0,0)}
+$("back").onclick=()=>showStep(step-1);
+$("next").onclick=()=>{if(step<2)return showStep(step+1);if(P.income==null)P.income=+$("income").value*1e5;if(P.percent==null)P.percent=+$("percent").value;save();results(true)};
+/* results */
+async function results(scan){if(scan){$("scan").classList.add("on");const names=["Central Sector Scheme","Post-Matric SC","PM YASASVI","AICTE Pragati","Minority scholarships","Ishan Uday","National Fellowship","ICAR Talent"];let i=0;const iv=setInterval(()=>$("sn").textContent="Checking: "+names[i++%names.length],260);
+  await Promise.all([refresh(),new Promise(r=>setTimeout(r,2000))]);clearInterval(iv);$("scan").classList.remove("on")}else await refresh();
+ go("pResults");first=true;setT(innerWidth<900?"m":"c");render(true);if(!$("log").children.length)greet()}
+async function refresh(){try{const d=await api("recommend",P);data=d.results;window.C=d.counts}catch(e){}}
+function countTo(el,n){const t0=performance.now();(function f(t){const p=Math.min((t-t0)/1200,1);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)}
+function burst(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;for(let i=0;i<40;i++){const c=h("span","conf");c.style.left=Math.random()*100+"vw";c.style.background=["#ffb400","#0fa596","#e8503a","#6c5ce7"][i%4];c.style.animationDelay=Math.random()*.6+"s";c.style.animationDuration=1.8+Math.random()*1.4+"s";document.body.append(c);setTimeout(()=>c.remove(),3500)}}
+function linkRow(ls){const d=h("div");ls.forEach((l,i)=>{const a=h("a","lk"+(i?" alt":""),l.label);a.href=l.url;a.target="_blank";a.rel="noopener noreferrer";d.append(a)});return d}
+function render(anim){const c=C||{yes:0,maybe:0,no:0},tot=data.length||20;$("of").textContent="of "+tot;countTo($("big"),c.yes);
+ $("arc").style.strokeDashoffset=339.3*(1-c.yes/tot);
+ $("head").textContent=c.yes?`You qualify for ${c.yes} scholarship${c.yes>1?"s":""}`:"No confirmed match yet";
+ $("subh").textContent=c.maybe?`${c.maybe} more could fit once you add missing details. Ask the assistant.`:"Ask the assistant about documents, deadlines and the form.";
+ if(anim&&c.yes&&first){setTimeout(burst,700)}first=false;
+ const st=$("stats");st.replaceChildren();[["yes","Eligible"],["maybe","Need info"],["no","Not eligible"]].forEach(([k,l])=>{const s=h("div","stat"+(filter==k?" on":""));s.append(h("b",null,c[k]),l);s.onclick=()=>{filter=k;render()};st.append(s)});
+ const box=$("cards");box.replaceChildren();const list=data.filter(r=>r.status==filter);if(!list.length)box.append(h("p",null,filter=="yes"?"Nothing confirmed yet. Edit your profile or ask the assistant.":"Nothing here."));
+ list.forEach((r,i)=>{const d=h("details","card"+(r.id==hl?" hl":""));d.style.animationDelay=Math.min(i,10)*60+"ms";d.open=r.id==hl;const s=h("summary");s.append(h("div","t",r.name),h("div","m",r.ministry));
+  const tg=h("div","tags2");tg.append(h("span","tag "+r.status,{yes:"Eligible",maybe:"Needs "+r.missing.join(", "),no:"Not eligible"}[r.status]),h("span","tag",r.amount));
+  if(r.days_left!=null)tg.append(h("span","tag "+(r.days_left<0?"no":r.days_left<30?"maybe":""),r.days_left<0?"Closed":r.days_left+" days left"));s.append(tg);
+  const b=h("div","body");b.append(h("div",null,r.description));
+  if(r.why_not.length){const u=h("ul");r.why_not.forEach(w=>u.append(h("li",null,w)));b.append(h("b",null,"Why not"),u)}
+  const u=h("ul");r.docs.forEach(x=>u.append(h("li",null,x)));b.append(h("p",null,""),h("b",null,"Documents"),u);
+  b.append(linkRow([{label:r.apply_url.includes("scholarships.gov.in")?"Apply on NSP":"Apply here",url:r.apply_url},...(r.info_url?[{label:"Ministry website",url:r.info_url}]:[])]));d.append(s,b);box.append(d)})}
+$("edit").onclick=()=>{buildWizard();go("pProfile");live()};
+function setT(t){$("pResults").dataset.t=t;$("sc").classList.toggle("on",t!="g");$("sg").classList.toggle("on",t=="g");document.querySelectorAll(".nb button").forEach(b=>b.classList.toggle("on",b.dataset.t==t));if(t=="g")loadGuide()}
+$("sc").onclick=()=>setT("c");$("sg").onclick=()=>setT("g");document.querySelectorAll(".nb button").forEach(b=>b.onclick=()=>setT(b.dataset.t));
+async function loadGuide(){if(guideDone)return;guideDone=true;try{(await api("form-guide",null,"GET")).forEach(g=>{const d=h("details","card");const s=h("summary");s.append(h("div","t",g.title));const b=h("div","body");const u=h("ul");g.steps.forEach(x=>u.append(h("li",null,x)));b.append(u,h("p",null,"Tip: "+g.tip));if(g.link)b.append(linkRow([g.link]));d.append(s,b);$("guidePane").append(d)})}catch(e){guideDone=false}}
+/* chat */
+function add(t,cls,links){const m=h("div","msg "+cls,t);if(links&&links.length)m.append(linkRow(links));$("log").append(m);$("log").scrollTop=1e9;return m}
+function setSugg(l){const s=$("sugg");s.replaceChildren();(l||["Which scholarships can I apply for?","How do I fill the form?","What is OTR?"]).forEach(t=>{const b=h("button",null,t);b.onclick=()=>send(t);s.append(b)})}
+function greet(){add("Hi! I already have your profile. Ask me about any scheme, documents, deadlines, OTR or how to fill the NSP form. You can also tell me new details, like \"my income is 3 lakh\".","bot");setSugg()}
+async function send(text){add(text,"user");const w=h("div","msg bot typing");w.append(h("i"),h("i"),h("i"));$("log").append(w);$("log").scrollTop=1e9;
+ try{const d=await api("chat",{message:text,profile:P});w.className="msg bot";w.textContent=d.reply;if(d.links&&d.links.length)w.append(linkRow(d.links));setSugg(d.suggest);
+  if(Object.keys(d.profile_updates).length){Object.assign(P,d.profile_updates);save()}hl=d.highlight;await refresh();if(hl){const r=data.find(x=>x.id==hl);if(r)filter=r.status}render()}
+ catch(e){w.className="msg bot";w.textContent=e.message}$("log").scrollTop=1e9}
+$("f").onsubmit=e=>{e.preventDefault();const t=$("q").value.trim();if(t){$("q").value="";send(t)}};
+/* boot */
+function start(){if(P.level&&P.income!=null)results(false);else{buildWizard();go("pProfile");live()}}
+if(token)start();
+</script></body></html>
