@@ -1,4 +1,4 @@
-# Scholar AI — NSP Scholarship Assistant
+# Scholarship Eligibility Application Assistant 
 
 No external LLM or API. Everything runs on your machine.
 
